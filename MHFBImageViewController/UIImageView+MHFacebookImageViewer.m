@@ -43,6 +43,24 @@ static char kImageBrowserKey;
     tapGesture = nil;
 }
 
+- (void) openImageViewerWithImageURL:(NSURL *)url onClose:(MHFacebookImageViewerClosingBlock)close
+{
+    MHFacebookImageViewerTapGestureRecognizer *  tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+    tapGesture.imageURL = url;
+    tapGesture.openingBlock = nil;
+    tapGesture.closingBlock = close;
+    [self addGestureRecognizer:tapGesture];
+    //prevent closingBlock from releasing
+    //tapGesture = nil;
+    
+    [self setImageBrowser:[[MHFacebookImageViewer alloc]init]];
+    [[self imageBrowser] setSenderView: self];
+    [[self imageBrowser] setImageURL:url];
+    [[self imageBrowser] setClosingBlock:tapGesture.closingBlock];
+    
+    if(self.image)
+        [self.imageBrowser presentFromRootViewController];
+}
 
 - (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close {
     [self setupImageViewerWithDatasource:imageDatasource initialIndex:0 onOpen:open onClose:close];

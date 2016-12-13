@@ -10,6 +10,7 @@
 #import "MHFacebookImageViewer.h"
 
 @interface UIImageView (MHFacebookImageViewer)
+- (void) openImageViewerWithImageURL:(NSURL *)url onClose:(MHFacebookImageViewerClosingBlock)close;
 
 - (void) setupImageViewer;
 - (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
