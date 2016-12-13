@@ -354,6 +354,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Michael Henry Pantaleon";
+				TargetAttributes = {
+					998724EC1757AFFD004FDBC5 = {
+						DevelopmentTeam = NVV3VGDMQW;
+					};
+				};
 			};
 			buildConfigurationList = 998724E81757AFFD004FDBC5 /* Build configuration list for PBXProject "FBImageViewController_Demo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -554,10 +559,12 @@
 		998725261757B000004FDBC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = NVV3VGDMQW;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FBImageViewController_Demo/FBImageViewController_Demo-Prefix.pch";
 				INFOPLIST_FILE = "FBImageViewController_Demo/FBImageViewController_Demo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yeleaf.FBImageViewController-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -566,10 +573,12 @@
 		998725271757B000004FDBC5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = NVV3VGDMQW;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FBImageViewController_Demo/FBImageViewController_Demo-Prefix.pch";
 				INFOPLIST_FILE = "FBImageViewController_Demo/FBImageViewController_Demo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yeleaf.FBImageViewController-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
