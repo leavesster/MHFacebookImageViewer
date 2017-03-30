@@ -534,7 +534,8 @@ static NSString * cellID = @"mhfacebookImageViewerCell";
     _collectionView.dataSource = self;
     _collectionView.backgroundColor = [UIColor clearColor];
     _collectionView.delaysContentTouches = YES;
-    _collectionView.contentOffset = CGPointMake(0, _initialIndex * windowBounds.size.width);
+    _collectionView.pagingEnabled = YES;
+    _collectionView.contentOffset = CGPointMake(_initialIndex * windowBounds.size.width, 0);
     [_collectionView registerClass:[MHFacebookImageViewerCell class] forCellWithReuseIdentifier:cellID];
     
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
