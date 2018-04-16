@@ -159,15 +159,15 @@ static const CGFloat kMinImageScale = 1.0f;
     _panGesture.delegate = self;
     
     __weak UIView *weakSuperView = view.superview;
-    while (![weakSuperView isKindOfClass:[UITableView class]]) {
+    while (![weakSuperView isKindOfClass:[UICollectionView class]]) {
         weakSuperView = weakSuperView.superview;
         if (weakSuperView == Nil) {
             break;
         }
     }
     
-    if ([weakSuperView isKindOfClass:[UITableView class]]) {
-        [((UITableView*)weakSuperView).panGestureRecognizer requireGestureRecognizerToFail:_panGesture];
+    if ([weakSuperView isKindOfClass:[UICollectionView class]]) {
+        [((UICollectionView*)weakSuperView).panGestureRecognizer requireGestureRecognizerToFail:_panGesture];
     }
     
     
@@ -284,7 +284,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (CGRect) centerFrameFromImage:(UIImage*) image {
     if(!image) return CGRectZero;
     
-    CGRect windowBounds = _rootViewController.view.bounds;
+    CGRect windowBounds = [UIApplication sharedApplication].keyWindow.bounds;
     CGSize newImageSize = [self imageResizeBaseOnWidth:windowBounds
                            .size.width oldWidth:image
                            .size.width oldHeight:image.size.height];
@@ -443,6 +443,8 @@ static const CGFloat kMinImageScale = 1.0f;
     UIView *_blackMask;
     UIImageView * _imageView;
     UIButton * _doneButton;
+    UIButton *_backButton;
+    UIButton * _deleteButton;
     UIView * _superView;
     
     CGPoint _panOrigin;
@@ -489,6 +491,14 @@ static NSString * cellID = @"mhfacebookImageViewerCell";
     imageViewerCell.statusBarStyle = _statusBarStyle;
     imageViewerCell.backgroundColor = [UIColor clearColor];
     imageViewerCell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    if (self.deleteBlock) {
+        [_deleteButton removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+        [_deleteButton addTarget:imageViewerCell action:@selector(dismissViewController) forControlEvents:UIControlEventTouchUpInside];
+        [_deleteButton addTarget:self action:@selector(removeImage:) forControlEvents:UIControlEventTouchUpInside];
+        [_backButton removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+        [_backButton addTarget:imageViewerCell action:@selector(dismissViewController) forControlEvents:UIControlEventTouchUpInside];
+    }
     
     if(!self.imageDatasource) {
         // Just to retain the old version
@@ -544,10 +554,36 @@ static NSString * cellID = @"mhfacebookImageViewerCell";
     _blackMask.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view insertSubview:_blackMask atIndex:0];
     
-    _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
-    [_doneButton setImage:[UIImage imageNamed:@"Done"] forState:UIControlStateNormal];
-    _doneButton.frame = CGRectMake(windowBounds.size.width - (51.0f + 9.0f),15.0f, 51.0f, 26.0f);
+    
+    if (self.deleteBlock) {
+        static CGFloat kVerticalMargin = 43;
+        static CGFloat kHorizontalMargin = 40;
+        _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_backButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
+        [_backButton setImage:[UIImage imageNamed:@"Back"] forState:UIControlStateNormal];
+        [_backButton sizeToFit];
+        _backButton.frame = CGRectMake(kHorizontalMargin, CGRectGetHeight(windowBounds) - kVerticalMargin - CGRectGetHeight(_backButton.frame), CGRectGetWidth(_backButton.frame), CGRectGetHeight(_backButton.frame));
+        [self.view addSubview:_backButton];
+        
+        _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_deleteButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
+        [_deleteButton setImage:[UIImage imageNamed:@"Delete"] forState:UIControlStateNormal];
+        [_deleteButton sizeToFit];
+        _deleteButton.frame = CGRectMake(CGRectGetWidth(windowBounds) - kHorizontalMargin - CGRectGetWidth(_deleteButton.frame), CGRectGetHeight(windowBounds) - kVerticalMargin - CGRectGetHeight(_deleteButton.frame), CGRectGetWidth(_deleteButton.frame), CGRectGetHeight(_deleteButton.frame));
+        [_deleteButton addTarget:self action:@selector(removeImage:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_deleteButton];
+        
+        
+    }
+}
+
+- (void)removeImage:(UIButton *)sender
+{
+    NSIndexPath *indexPath = [[_collectionView indexPathsForVisibleItems] firstObject];
+    
+    if (self.deleteBlock) {
+        self.deleteBlock(indexPath.item);
+    }
 }
 
 #pragma mark - Show

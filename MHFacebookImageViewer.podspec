@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name = 'MHFacebookImageViewer'
-  s.version = '1.1.1'
+  s.version = '1.2.4'
   s.summary = 'A new Image Viewer inspired by Facebook.'
   s.homepage = 'http://corp.frdic.com:300/other/MHFacebookImageViewer'
   s.author = 'Michael Henry Pantaleon', 'michaelhenry119@yahoo.com.ph'
   s.source = {
     :git => 'http://corp.frdic.com:300/other/MHFacebookImageViewer.git',
-    :tag => '1.1.0'
+    :tag => '1.2.4'
   }
   s.platform = :ios, '8.0'
   s.source_files = 'MHFBImageViewController/*.{h,m}'

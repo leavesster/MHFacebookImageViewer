@@ -77,6 +77,18 @@ static char kImageBrowserKey;
     tapGesture = nil;
 }
 
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close delete:(MHFacebookImageViewerDeletingBlock)deleteBlock
+{
+    self.userInteractionEnabled = YES;
+    MHFacebookImageViewerTapGestureRecognizer *tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+    tapGesture.imageDatasource = imageDatasource;
+    tapGesture.openingBlock = open;
+    tapGesture.closingBlock = close;
+    tapGesture.deleteBlock = deleteBlock;
+    tapGesture.initialIndex = initialIndex;
+    [self addGestureRecognizer:tapGesture];
+    tapGesture = nil;
+}
 
 #pragma mark - Handle Tap
 - (void) didTap:(MHFacebookImageViewerTapGestureRecognizer*)gestureRecognizer {
@@ -88,6 +100,7 @@ static char kImageBrowserKey;
     [[self imageBrowser] setClosingBlock:gestureRecognizer.closingBlock];
     [[self imageBrowser] setImageDatasource:gestureRecognizer.imageDatasource];
     [[self imageBrowser] setInitialIndex:gestureRecognizer.initialIndex];
+    [[self imageBrowser] setDeleteBlock:gestureRecognizer.deleteBlock];
     
     if(self.image)
         [self.imageBrowser presentFromRootViewController];
